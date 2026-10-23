@@ -1,0 +1,51 @@
+<%- include("partials/head", { title: place.name, theme: forecast.current.theme }) %>
+<main class="weather">
+  <section class="now">
+    <div>
+      <h1><%= place.name %></h1>
+      <p class="region"><%= place.region %></p>
+      <p class="temp"><%= forecast.current.temp %><span><%= forecast.units.temp %></span></p>
+      <p class="cond"><span aria-hidden="true"><%= forecast.current.emoji %></span> <%= forecast.current.label %></p>
+    </div>
+    <dl class="stats">
+      <div><dt>Feels like</dt><dd><%= forecast.current.feelsLike %><%= forecast.units.temp %></dd></div>
+      <div><dt>Humidity</dt><dd><%= forecast.current.humidity %>%</dd></div>
+      <div><dt>Wind</dt><dd><%= forecast.current.wind %> <%= forecast.units.wind %></dd></div>
+      <div><dt>Sunrise · Sunset</dt><dd><%= forecast.daily[0].sunrise %> · <%= forecast.daily[0].sunset %></dd></div>
+    </dl>
+    <a class="unit-toggle" href="/weather?<%= new URLSearchParams({ lat: place.lat, lon: place.lon, name: place.name, region: place.region, units: units === 'metric' ? 'imperial' : 'metric' }) %>">
+      Switch to <%= units === "metric" ? "°F" : "°C" %>
+    </a>
+  </section>
+
+  <section class="panel">
+    <h2>Next 24 hours</h2>
+    <div class="chart-wrap">
+      <svg class="chart" viewBox="0 0 600 170" role="img" aria-label="Temperature over the next 24 hours, from <%= forecast.hourly[0]?.temp %> to <%= forecast.hourly.at(-1)?.temp %> degrees">
+        <path d="<%= chart.path %>" class="line" />
+        <% chart.points.forEach((p, i) => { if (i % 3 === 0) { %>
+          <circle cx="<%= p.x %>" cy="<%= p.y %>" r="3" class="dot" />
+          <text x="<%= p.x %>" y="<%= p.y - 10 %>" class="label"><%= forecast.hourly[i].temp %>°</text>
+          <text x="<%= p.x %>" y="148" class="hour"><%= forecast.hourly[i].hour %></text>
+          <text x="<%= p.x %>" y="164" class="rain-label">💧<%= forecast.hourly[i].rain %>%</text>
+        <% } }) %>
+      </svg>
+    </div>
+  </section>
+
+  <% const weekMin = Math.min(...forecast.daily.map((d) => d.min)); const weekSpan = Math.max(1, Math.max(...forecast.daily.map((d) => d.max)) - weekMin); %>
+  <section class="panel">
+    <h2>7-day forecast</h2>
+    <ul class="days">
+      <% forecast.daily.forEach((d, i) => { %>
+        <li>
+          <span class="day"><%= i === 0 ? "Today" : d.weekday %></span>
+          <span class="icon" title="<%= d.label %>"><%= d.emoji %></span>
+          <span class="rain">💧<%= d.rain %>%</span>
+          <span class="range"><span class="min"><%= d.min %>°</span><span class="track"><span class="fill" style="--from: <%= ((d.min - weekMin) / weekSpan * 100).toFixed(1) %>%; --to: <%= ((d.max - weekMin) / weekSpan * 100).toFixed(1) %>%"></span></span><span class="max"><%= d.max %>°</span></span>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+</main>
+<%- include("partials/foot") %>

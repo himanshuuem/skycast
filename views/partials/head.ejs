@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> · SkyCast</title>
+  <meta name="description" content="Fast, ad-free weather forecasts powered by Open-Meteo.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body data-theme="<%= typeof theme !== 'undefined' ? theme : 'clear' %>">
+  <header class="bar">
+    <a href="/" class="logo">☁ SkyCast</a>
+    <form action="/search" method="get" class="search" role="search">
+      <label for="q" class="visually-hidden">City</label>
+      <input id="q" name="q" placeholder="Search a city…" value="<%= q %>" required minlength="2" autocomplete="off">
+      <input type="hidden" name="units" value="<%= units %>">
+      <button type="submit" aria-label="Search">→</button>
+    </form>
+  </header>

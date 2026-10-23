@@ -1,0 +1,28 @@
+<%- include("partials/head", { title: "Weather" }) %>
+<main class="home">
+  <h1>What's the sky doing?</h1>
+  <p class="sub">Search any city, or use your location. No ads, no tracking, no API key.</p>
+  <button type="button" class="geo-btn" id="geoBtn">📍 Use my location</button>
+  <p class="geo-status" id="geoStatus" role="status"></p>
+
+  <% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+
+  <% if (typeof cities !== "undefined" && cities.length) { %>
+    <h2>Did you mean…</h2>
+    <ul class="choices">
+      <% cities.forEach((c) => { %>
+        <li><a href="/weather?<%= new URLSearchParams({ lat: c.latitude, lon: c.longitude, name: c.name, region: c.region, units }) %>"><strong><%= c.name %></strong> <span><%= c.region %></span></a></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <% if (recent.length) { %>
+    <h2>Recent</h2>
+    <ul class="chips">
+      <% recent.forEach((r) => { %>
+        <li><a href="/weather?<%= new URLSearchParams({ lat: r.lat, lon: r.lon, name: r.name, region: r.region, units }) %>"><%= r.name %></a></li>
+      <% }) %>
+    </ul>
+  <% } %>
+</main>
+<%- include("partials/foot") %>
