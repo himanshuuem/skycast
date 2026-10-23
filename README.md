@@ -2,6 +2,8 @@
 
 > A fast, ad-free weather app on the free **Open-Meteo API**. It has city search with disambiguation, geolocation, a server-rendered SVG temperature chart, a 7-day forecast, °C/°F, and a background that changes with the conditions. Built with Express, EJS and axios, and no API key is needed.
 
+**🔗 Live demo:** https://skycast-icru.onrender.com/ *(free tier: the first visit after idle takes ~30–60s to wake up)*
+
 [![test](https://github.com/himanshuuem/skycast/actions/workflows/test.yml/badge.svg)](https://github.com/himanshuuem/skycast/actions/workflows/test.yml)
 ![Express](https://img.shields.io/badge/Express-5-000?logo=express)
 ![axios](https://img.shields.io/badge/axios-5A29E4?logo=axios&logoColor=white)
